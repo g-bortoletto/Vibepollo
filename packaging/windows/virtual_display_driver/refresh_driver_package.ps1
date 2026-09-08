@@ -182,7 +182,11 @@ function Resolve-PackageVersionFromGit {
         return ''
     }
 
-    $describe = & $git.Source -C $Path describe --tags --long --match 'v[0-9]*' 2>$null
+    try {
+        $describe = & $git.Source -C $Path describe --tags --long --match 'v[0-9]*' 2>$null
+    } catch {
+        return ''
+    }
     if ($LASTEXITCODE -ne 0 -or [string]::IsNullOrWhiteSpace($describe)) {
         return ''
     }
